@@ -1,0 +1,27 @@
+
+#######################################
+# Syntax Coloring Map for FT5206
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+FT5206	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+getTScoordinates	KEYWORD2
+getTSregisters	KEYWORD2
+touched	KEYWORD2
+getGesture	KEYWORD2
+getTSflag	KEYWORD2
+setTouchLimit	KEYWORD2
+getTouchLimit	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+FT5206_REGISTERS	LITERAL1
