@@ -1,5 +1,5 @@
 # FT5206
-Library for capacitive TouchScreen drived by FT5206xx chip<br>
+Library for capacitive TouchScreen drived by FT5206xx chip used in some eastrising 7" and 5" display and maybe by Adafruit (not sure)<br>
 Originally created by Eastrising, modded by Helge Langehaug with the name of FT5x06 and finally recoded by myself.<br>
 The FT5x06 library has several errors and I cannot really get reliable data for the 5 touch concurrent positions so I have recoded the all thing.<br>
 Now I can get the correct data and even example it's much more correct, not more garbage due incorrect coordinates, etc.<br>
