@@ -53,7 +53,7 @@ void FT5206::begin(enum FT5206isr init)
   
 void FT5206::rearmISR(void) 
 {
-	if (_isrMode != EXTRLN){
+	if (_isrMode == SAFE){
 #ifdef digitalPinToInterrupt
 		attachInterrupt(digitalPinToInterrupt(_ctpInt),isr,FALLING);
 #else
