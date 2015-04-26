@@ -30,6 +30,8 @@ void FT5206::isr(void)
 	_touched = true;
 }
 
+
+//in EXTRLN the entire ISR it's not handled by the library!
 void FT5206::begin(enum FT5206isr init) 
 {
     _isrMode = init;
@@ -50,7 +52,8 @@ void FT5206::begin(enum FT5206isr init)
 #endif
 	}
 }
-  
+ 
+//this rearm ISR only in SAFE mode, any other mode does nothing
 void FT5206::rearmISR(void) 
 {
 	if (_isrMode == SAFE){
@@ -63,6 +66,7 @@ void FT5206::rearmISR(void)
 	}
 }
 
+//in safe mode it will also disconnect interrupt!
 bool FT5206::touched()
 {
     if (_touched){
