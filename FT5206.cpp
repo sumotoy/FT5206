@@ -30,9 +30,9 @@ void FT5206::isr(void)
 	_touched = true;
 }
 
-void FT5206::begin(void) 
+void FT5206::begin(enum FT5206isr init) 
 {
-    pinMode(_ctpInt ,INPUT);
+    _isrMode = init;
     Wire.begin();
 	#if ARDUINO >= 157
 		Wire.setClock(400000UL); // Set I2C frequency to 400kHz
@@ -41,18 +41,40 @@ void FT5206::begin(void)
 	#endif
 	delay(10);
 	writeRegister(FT5206_DEVICE_MODE,0);
+	if (_isrMode != EXTRLN){
+		pinMode(_ctpInt ,INPUT);
 #ifdef digitalPinToInterrupt
-    attachInterrupt(digitalPinToInterrupt(_ctpInt),isr,FALLING);
+		attachInterrupt(digitalPinToInterrupt(_ctpInt),isr,FALLING);
 #else
-    attachInterrupt(0,isr,FALLING);
+		attachInterrupt(0,isr,FALLING);
 #endif
+	}
 }
   
+void FT5206::rearmISR(void) 
+{
+	if (_isrMode != EXTRLN){
+#ifdef digitalPinToInterrupt
+		attachInterrupt(digitalPinToInterrupt(_ctpInt),isr,FALLING);
+#else
+		attachInterrupt(0,isr,FALLING);
+#endif
+		_touched = false;
+	}
+}
 
 bool FT5206::touched()
 {
     if (_touched){
-		_touched = false;
+		if (_isrMode == SAFE){
+#ifdef digitalPinToInterrupt
+		detachInterrupt(digitalPinToInterrupt(_ctpInt));
+#else
+		detachInterrupt(0);
+#endif
+		} else {
+			_touched = false;
+		}
 		return true;
     }
 	return false;

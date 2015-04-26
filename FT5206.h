@@ -8,6 +8,8 @@ BSD license, all text above must be included in any redistribution
 -------------------------------------------------------------------------------
 Modified by Max MC Costa from .s.u.m.o.t.o.y. to correctly return coordinates,
 fixed initialization, added gesture, touch state and faster operations.
+works with Teensy 3,3.1,LC and Arduino's (dunno DUE)
+version:1.0
 *************************************************************************/
 
 #ifndef _FT5206_H_
@@ -62,12 +64,12 @@ TOUCH - YL
 bit[7:0] touch LSB Y pos (pix)
 */
 
-
+enum FT5206isr{ INTRL=0, SAFE, EXTRLN };
 
 class FT5206 {
  public:
 	FT5206(uint8_t CTP_INT);
-	void 				begin(void);
+	void 				begin(enum FT5206isr init=INTRL);
 	uint8_t 			getTScoordinates(uint16_t (*touch_coordinates)[2], uint8_t *reg);
 	void 				getTSregisters(uint8_t *registers);
 	bool 				touched();
@@ -76,11 +78,12 @@ class FT5206 {
 	void 				writeRegister(uint8_t reg,uint8_t val);
 	void 				setTouchLimit(uint8_t limit);
 	uint8_t 			getTouchLimit(void);
-	
+	void 				rearmISR(void);
  private:
 	static void 		 isr(void);
 	uint8_t 			_ctpInt;
 	uint8_t				_maxTouch;
+	enum FT5206isr 		_isrMode;
 	const uint8_t coordRegStart[5] = {{0x03},{0x09},{0x0F},{0x15},{0x1B}};
 };
 
