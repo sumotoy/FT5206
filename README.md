@@ -22,6 +22,6 @@ Decoded gestures are:<br>
 See the encluded example for reference!<br><br>
 *Connections:*<br>
 
-..to contine...
+..to continue...
 
  
