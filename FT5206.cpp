@@ -11,7 +11,7 @@ fixed initialization, added gesture, touch state and faster operations.
 *************************************************************************/
 
 #include <SPI.h>
-#include "Wire.h"
+#include "i2c_t3.h"
 #include "FT5206.h"
 
 
