@@ -15,6 +15,8 @@ version:1.0
 #ifndef _FT5206_H_
 #define _FT5206_H_
 
+#include "setup.h"
+
 #if defined(ENERGIA) // LaunchPad, FraunchPad and StellarPad specific
 	#include "Energia.h"
 #else
