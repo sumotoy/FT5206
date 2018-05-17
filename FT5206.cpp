@@ -13,6 +13,7 @@ fixed initialization, added gesture, touch state and faster operations.
 #include <SPI.h>
 #include "i2c_t3.h"
 #include "FT5206.h"
+#include "helpers.h"
 
 
 static volatile boolean _touched = false;
@@ -20,7 +21,7 @@ static volatile boolean _touched = false;
 
 FT5206::FT5206(uint8_t CTP_INT)
 {
-    _ctpInt = CTP_INT;
+  _ctpInt = CTP_INT;
 	_maxTouch = 5;
 }
 
@@ -32,7 +33,7 @@ void FT5206::isr(void)
 
 
 //in EXTRLN the entire ISR it's not handled by the library!
-void FT5206::begin(enum FT5206isr init) 
+void FT5206::begin(enum FT5206isr init)
 {
     _isrMode = init;
     Wire.begin();
@@ -52,9 +53,9 @@ void FT5206::begin(enum FT5206isr init)
 #endif
 	}
 }
- 
+
 //this rearm ISR only in SAFE mode, any other mode does nothing
-void FT5206::rearmISR(void) 
+void FT5206::rearmISR(void)
 {
 	if (_isrMode == SAFE){
 #ifdef digitalPinToInterrupt
@@ -69,18 +70,19 @@ void FT5206::rearmISR(void)
 //in safe mode it will also disconnect interrupt!
 bool FT5206::touched()
 {
-    if (_touched){
-		if (_isrMode == SAFE){
+  if (_touched) {
+		if (_isrMode == SAFE) {
 #ifdef digitalPinToInterrupt
 		detachInterrupt(digitalPinToInterrupt(_ctpInt));
 #else
 		detachInterrupt(0);
 #endif
-		} else {
+		}
+    else {
 			_touched = false;
 		}
 		return true;
-    }
+  }
 	return false;
 }
 
@@ -91,8 +93,8 @@ void FT5206::writeRegister(uint8_t reg,uint8_t val)
     Wire.write(val);
     Wire.endTransmission(FT5206_I2C_ADDRESS);
 }
- 
- 
+
+
 void FT5206::setTouchLimit(uint8_t limit)
 {
 	if (limit > 5) limit = 5;
@@ -113,21 +115,21 @@ uint8_t FT5206::getTScoordinates(uint16_t (*touch_coordinates)[2], uint8_t *reg)
 		touch_coordinates[i-1][0] = ((reg[coordRegStart[i-1]] & 0x0f) << 8) | reg[coordRegStart[i-1] + 1];
 		touch_coordinates[i-1][1] = ((reg[coordRegStart[i-1] + 2] & 0x0f) << 8) | reg[coordRegStart[i-1] + 3];
 		if (i == _maxTouch) return i;
-	} 
+	}
     return touches;
 }
 
-void FT5206::getTSregisters(uint8_t *registers) 
+void FT5206::getTSregisters(uint8_t *registers)
 {
-    Wire.requestFrom(FT5206_I2C_ADDRESS, FT5206_REGISTERS); 
+    Wire.requestFrom(FT5206_I2C_ADDRESS, FT5206_REGISTERS);
     uint8_t register_number = 0;
     while(Wire.available()) {
       registers[register_number++] = Wire.read();
     }
 }
-  
 
-uint8_t FT5206::getGesture(uint8_t *reg) 
+
+uint8_t FT5206::getGesture(uint8_t *reg)
 {
 	if (_maxTouch < 2) return 0;
 	uint8_t temp = reg[FT5206_GEST_ID];
@@ -159,7 +161,7 @@ uint8_t FT5206::getGesture(uint8_t *reg)
 	return 0;
 }
 
-uint8_t FT5206::getTSflag(uint8_t *reg) 
+uint8_t FT5206::getTSflag(uint8_t *reg)
 {
 	uint8_t temp = reg[FT5206_TOUCH1_XH];
 	//if (!bitRead(temp,7) && !bitRead(temp,6)) return 3;//
