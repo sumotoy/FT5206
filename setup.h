@@ -15,7 +15,7 @@ version:1.0
 #ifndef _SETUP_H_
 #define _SETUP_H_
 
-#define Wire  Wire2
+#define Wire  Wire1
 
 
 #endif /* _SETUP_H_ */
