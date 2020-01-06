@@ -84,7 +84,7 @@ class FT5206 {
 	uint8_t 			_ctpInt;
 	uint8_t				_maxTouch;
 	enum FT5206isr 		_isrMode;
-	const uint8_t coordRegStart[5] = {{0x03},{0x09},{0x0F},{0x15},{0x1B}};
+	const uint8_t coordRegStart[5] = {0x03,0x09,0x0F,0x15,0x1B};
 };
 
 #endif
